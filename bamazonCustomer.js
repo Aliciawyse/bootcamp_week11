@@ -1,44 +1,31 @@
-var mysql = require("mysql");
+var mysql = require("promise-mysql");
 var inquirer = require("inquirer");
 
 
-//create the connection information for the sql database
-var connection = mysql.createConnection({
+mysql.createConnection({
     host: "localhost",
     port: 3306,
-
-    //your username
-    user: "root",
-
-    //your password
+    user: 'root',
     password: "",
-    database: "bamazonDB"
+    database: 'bamazonDB'
+}).then(function(conn){
+
+    //do stuff with connection
+    var result = conn.query('SELECT * FROM products');
+    conn.end();
+    return result;
+
+}).then(function(rows){
+
+    //display database
+    for(var i = 0; i < rows.length; i++){
+        console.log(rows[i].item_id + ") " + rows[i].product_name + " // " + "$" +rows[i].price);
+    }
+}).then(function(){
+    start();
 });
 
-connection.connect(function(err){
-    if (err) throw err;
-    afterConnection();
-});
 
-
-function afterConnection() {
-    connection.query("SELECT * FROM products", function(err, res) {
-        if (err) throw err;
-        displayDB();
-        start();
-        connection.end();
-    });
-}
-
-function displayDB(){
-    var query = "SELECT * FROM products";
-
-    connection.query(query, function (err,res) {
-        for (var i = 0; i < res.length; i++){
-            console.log(res[i].item_id + ") " + res[i].product_name + " // " + "$" +res[i].price);
-        }
-    });
-}
 
 function start(){
     inquirer
@@ -55,7 +42,5 @@ function start(){
             }
         ])
         .then(function(response){
-
     })
 }
-
