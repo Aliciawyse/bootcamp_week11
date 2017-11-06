@@ -3,5 +3,5 @@
 The app will take in orders from customers and deplete stock from the store's inventory.
 
 ### Built with
-Node.js and MySQL
+Node.js, NPM's promise-mysql and MySQL
 

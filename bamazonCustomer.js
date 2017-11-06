@@ -21,19 +21,21 @@ mysql.createConnection({
     for(var i = 0; i < rows.length; i++){
         console.log(rows[i].item_id + ") " + rows[i].product_name + " // " + "$" +rows[i].price);
     }
-}).then(function(){
-    start();
+
+}).then(function(rows){
+    start(rows);
+
 });
 
 
-
-function start(){
+function start(rows){
     inquirer
+
         .prompt([
             {
                 name: "buying",
                 type: "input",
-                message: "What's the ID of the product that you'd like to buy?\n"
+                message: "What's the ID of the product that you'd like to buy?"
             },
             {
                 name: "amount",
@@ -41,6 +43,4 @@ function start(){
                 message: "Great choice! How many would you like?"
             }
         ])
-        .then(function(response){
-    })
 }
