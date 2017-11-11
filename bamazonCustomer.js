@@ -2,33 +2,37 @@ var mysql = require("promise-mysql");
 var inquirer = require("inquirer");
 
 
+function log(val) {
+    console.log(val)
+}
+
 mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: 'root',
     password: "",
     database: 'bamazonDB'
-}).then(function(conn){
+}).then(function (conn) {
 
     //do stuff with connection
     var result = conn.query('SELECT * FROM products');
     conn.end();
     return result;
 
-}).then(function(rows){
+}).then(function (rows) {
 
     //display database
-    for(var i = 0; i < rows.length; i++){
-        console.log(rows[i].item_id + ") " + rows[i].product_name + " // " + "$" +rows[i].price);
+    for (var i = 0; i < rows.length; i++) {
+        console.log(rows[i].item_id + ") " + rows[i].product_name + " // " + "$" + rows[i].price);
     }
 
-}).then(function(rows){
+}).then(function (rows) {
     start(rows);
 
 });
 
 
-function start(rows){
+function start(rows) {
     inquirer
 
         .prompt([
@@ -43,4 +47,11 @@ function start(rows){
                 message: "Great choice! How many would you like?"
             }
         ])
+        .then(function (answer) {
+            updatingDB(answer);
+        })
+}
+
+function updatingDB(obj) {
+    var buying = (obj.buying);
 }
